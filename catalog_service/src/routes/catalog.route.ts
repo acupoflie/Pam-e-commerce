@@ -11,9 +11,12 @@ router.post(
   async (req: Request, res: Response, next: NextFunction) => {
     const input = req.body;
 
-    const data = await catalogService.createBook(input);
-
-    res.status(200).json({ message: "book created succesfully", data });
+    try {
+      const data = await catalogService.createBook(input);
+      res.status(200).json({ message: "book created succesfully", data });
+    } catch (error) {
+      next(error);
+    }
   }
 );
 
@@ -23,9 +26,12 @@ router.get(
     const limit = Number(req.query.limit) || 10;
     const offset = Number(req.query.offset);
 
-    const data = await catalogService.getBooks(limit, offset);
-
-    res.status(200).json({ message: "books fetched succesfully", data });
+    try {
+      const data = await catalogService.getBooks(limit, offset);
+      res.status(200).json({ message: "books fetched succesfully", data });
+    } catch (error) {
+      next(error);
+    }
   }
 );
 
@@ -33,9 +39,13 @@ router.get(
   "/books/:id",
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
-    const data = await catalogService.getBook(id);
 
-    res.status(200).json({ message: "book fetched succesfully", data });
+    try {
+      const data = await catalogService.getBook(id);
+      res.status(200).json({ message: "book fetched succesfully", data });
+    } catch (error) {
+      next(error);
+    }
   }
 );
 
@@ -45,9 +55,12 @@ router.patch(
     const id = req.params.id;
     const input = req.body;
 
-    const data = await catalogService.updateBook({ id, ...input });
-
-    res.status(200).json({ message: "book updated succesfully", data });
+    try {
+      const data = await catalogService.updateBook({ id, ...input });
+      res.status(200).json({ message: "book updated succesfully", data });
+    } catch (error) {
+      next(error);
+    }
   }
 );
 
@@ -56,9 +69,12 @@ router.delete(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
 
-    await catalogService.deleteBook(id);
-
-    res.status(200).json({ message: "book deleted succesfully" });
+    try {
+      await catalogService.deleteBook(id);
+      res.status(200).json({ message: "book deleted succesfully" });
+    } catch (error) {
+      next(error);
+    }
   }
 );
 

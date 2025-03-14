@@ -1,14 +1,9 @@
 import "dotenv/config";
-import express from "express";
-import catalogRouter from "./routes/catalog.route";
+import { logger } from "./utils/logger/logger";
+import app from "./expressApp";
 
-const app = express();
 const PORT = process.env.APP_PORT;
 
-app.use(express.json())
-
-app.use("/api/v1", catalogRouter);
-
 app.listen(PORT, () => {
-  console.log("server has started on port: ", PORT);
+  logger.info(`Server has started on port ${PORT}`);
 });
