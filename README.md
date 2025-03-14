@@ -9,8 +9,11 @@ This is a practical project to practice all the things I have learned so far. I 
 ## Design Architecture
 
 - Microservice Architecture
+- Domain-Driven Design
+- Apache Kafka // communication via Message Broker and REST
 - JWT Authentication with Passport.js
 - Docker compose for Databases
+- Prisma for Postgres / Mongoose for MongoDB
 
   
 ## Tech
