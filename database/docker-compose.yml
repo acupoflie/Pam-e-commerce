@@ -1,0 +1,11 @@
+services:
+  catalog_service:
+    image: postgres:17.4
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: catalog_service
+      POSTGRES_PASSWORD: catalog_password
+      POSTGRES_DB: catalog_db
+    volumes:
+      - "./db-data/catalog_db_server:/var/lib/postgres/data"
