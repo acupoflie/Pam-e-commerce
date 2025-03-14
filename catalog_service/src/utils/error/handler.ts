@@ -5,7 +5,7 @@ import {
   Unauthorized,
   ValidationError,
 } from "./errors";
-import { logger } from "../logger/logger";
+import { logger } from "../logger";
 
 export const GlobalErrorHandler = (
   error: Error,

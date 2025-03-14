@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { ICatalogRepository } from "../interface/ICatalogRepository";
 import { Book } from "../models/book.model";
+import { NotFoundError } from "../utils/error/errors";
 
 export class CatalogRepository implements ICatalogRepository {
   private _prisma: PrismaClient;
@@ -17,7 +18,7 @@ export class CatalogRepository implements ICatalogRepository {
     const book = await this._prisma.book.findFirst({
       where: { id },
     });
-    if (!book) throw new Error("product not found");
+    if (!book) throw new NotFoundError("product not found");
     return book;
   }
 
