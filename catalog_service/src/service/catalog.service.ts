@@ -24,7 +24,7 @@ export class CatalogService {
     return await this._repository.update(input);
   }
 
-  async deleteBook(id: string) {
+  async deleteBook(id?: string) {
     return this._repository.delete(id);
   }
 }

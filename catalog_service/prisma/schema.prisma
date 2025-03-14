@@ -14,18 +14,20 @@ datasource db {
 }
 
 model Book {
-  id String @id @default(uuid())
-  title String
-  author String
-  description String
-  language Language @default(English)
-  genres String[]
-  pageCount Int
-  price Int
-  stock Int
-  status StockStatus @default(InStock)
-  rating Int?
+  id           String      @id @default(uuid())
+  title        String
+  author       String
+  description  String
+  language     Language    @default(English)
+  genres       String[]
+  pageCount    Int
+  price        Int
+  stock        Int
+  status       StockStatus @default(InStock)
+  rating       Int?
   totalReviews Int?
+  createdAt    DateTime?   @default(now())
+  updatedAt    DateTime?   @updatedAt
 }
 
 enum StockStatus {

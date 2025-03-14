@@ -36,9 +36,12 @@ export class CatalogRepository implements ICatalogRepository {
     });
   }
 
-  async delete(id: string) {
-    return this._prisma.book.delete({
-      where: { id },
-    });
+  async delete(id?: string) {
+    if (id) {
+      return this._prisma.book.delete({
+        where: { id },
+      });
+    }
+    return this._prisma.book.deleteMany({});
   }
 }

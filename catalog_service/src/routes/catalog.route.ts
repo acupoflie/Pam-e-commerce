@@ -1,6 +1,12 @@
 import express, { NextFunction, Request, Response } from "express";
 import { CatalogService } from "../service/catalog.service";
 import { CatalogRepository } from "../repository/catalog.repository";
+import { ValidateRequest, ValidationError } from "../utils";
+import {
+  CreateBookSchema,
+  CreateBookType,
+  EditBookSchema,
+} from "../types/book-request.type";
 
 const router = express.Router();
 
@@ -12,6 +18,13 @@ router.post(
     const input = req.body;
 
     try {
+      const err = ValidateRequest<CreateBookType>(req.body, CreateBookSchema);
+
+      if (err) {
+        res.status(404).json(err);
+        return;
+      }
+
       const data = await catalogService.createBook(input);
       res.status(200).json({ message: "book created succesfully", data });
     } catch (error) {
@@ -56,6 +69,13 @@ router.patch(
     const input = req.body;
 
     try {
+      const err = ValidateRequest(req.body, EditBookSchema);
+
+      if (err) {
+        res.status(404).json(err);
+        return;
+      }
+
       const data = await catalogService.updateBook({ id, ...input });
       res.status(200).json({ message: "book updated succesfully", data });
     } catch (error) {
@@ -65,9 +85,9 @@ router.patch(
 );
 
 router.delete(
-  "/books/:id",
+  "/books/:id?",
   async (req: Request, res: Response, next: NextFunction) => {
-    const id = req.params.id;
+    const id: string | undefined = req.params?.id;
 
     try {
       await catalogService.deleteBook(id);

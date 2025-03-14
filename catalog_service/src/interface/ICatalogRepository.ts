@@ -5,5 +5,5 @@ export interface ICatalogRepository {
     findOne(id: string): Promise<Book>
     find(limit: number, offset: number): Promise<Book[]>
     update(data: Book): Promise<Book>
-    delete(id: string): any
+    delete(id?: string): any
 }
