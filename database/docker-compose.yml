@@ -19,3 +19,13 @@ services:
       POSTGRES_DB: user_db
     volumes:
       - "./db-data/user_db_server:/var/lib/postgres/data"
+  order_service:
+    image: postgres:17.4
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: order_service
+      POSTGRES_PASSWORD: order_password
+      POSTGRES_DB: order_db
+    volumes:
+      - "./db-data/order_db_server:/var/lib/postgres/data"
