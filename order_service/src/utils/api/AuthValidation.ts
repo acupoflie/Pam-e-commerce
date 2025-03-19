@@ -1,5 +1,6 @@
 import axios from "axios";
 import { NextFunction, Request, Response } from "express";
+import "../../dto/user.model";
 
 export const UserValidation = async (
   req: Request,
@@ -16,14 +17,14 @@ export const UserValidation = async (
       "http://localhost:9001/api/v1/users/validate",
       {
         headers: {
-          Authorization: req.headers.Authorization as string,
+          Authorization: req.headers.authorization as string,
         },
       }
     );
 
-    console.log(data)
+    console.log(data.data);
 
-    req.user = data.data;
+    req.user = data.data.user;
     next();
   } catch (error) {
     next(error);

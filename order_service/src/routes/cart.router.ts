@@ -9,39 +9,36 @@ const router = express.Router();
 
 const cartService = new CartService(new CartRepository());
 
-// router.post(
-//   "/cart",
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const user = req.user;
+router.post(
+  "/carts",
+  UserValidation,
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
 
-//     if (!user) {
-//       res.status(403).json({ message: "You are not authorized to do this" });
-//       return;
-//     }
+    if (!user) {
+      res.status(403).json({ message: "You are not authorized to do this" });
+      return;
+    }
 
-//     const errors = ValidateRequest<CartRequestType>(
-//       CartRequestSchema,
-//       req.body
-//     );
+    const errors = ValidateRequest<CartRequestType>(
+      CartRequestSchema,
+      req.body
+    );
 
-//     if (errors) {
-//       res.status(400).json(errors);
-//       return;
-//     }
+    if (errors) {
+      res.status(400).json(errors);
+      return;
+    }
 
-//     try {
-//       const cartId = await cartService.createCart(user.id, req.body);
-//       res.status(201).json({
-//         cartId,
-//       });
-//     } catch (error) {
-//       next(error);
-//     }
-//   }
-// );
-
-router.get("/test", UserValidation, async (req: Request, res: Response) => {
-  res.status(200).json({ message: "Hello" });
-});
+    try {
+      const cartId = await cartService.createCart(user.id, req.body);
+      res.status(201).json({
+        cartId,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export default router;

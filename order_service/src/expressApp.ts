@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(httpLogger);
 
-app.use("api/v1/cart", cartRouter);
+app.use("/api/v1", cartRouter);
 
 app.use(GlobalErrorHandler);
 
