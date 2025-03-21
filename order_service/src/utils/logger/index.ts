@@ -2,12 +2,12 @@ import pino, { stdTimeFunctions } from "pino";
 import { pinoHttp } from "pino-http";
 
 export const logger = pino({
-  name: "catalog_service",
+  name: "order_service",
   level: "info",
   base: {
-    serviceName: "catalog_service",
+    serviceName: "order_service",
   },
-  msgPrefix: "[Catalog Service]: ",
+  msgPrefix: "[Order Service]: ",
   timestamp: stdTimeFunctions.isoTime,
   transport: {
     target: "pino-pretty",

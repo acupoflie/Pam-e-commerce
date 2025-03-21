@@ -1,4 +1,8 @@
-import { CartLineItem, CartRequestType, CartWithLineItems } from "../dto/cartRequest.dto";
+import {
+  CartLineItem,
+  CartRequestType,
+  CartWithLineItems,
+} from "../dto/cartRequest.dto";
 import { ICartRepository } from "../interface/ICartRepository";
 import { logger } from "../utils";
 import { GetBookDetails } from "../utils/broker";
@@ -29,7 +33,27 @@ export class CartService {
     } as CartLineItem);
   }
 
-  async getCart(customerId: string): Promise<CartWithLineItems>{
+  async getCart(customerId: string): Promise<CartWithLineItems> {
     return await this._repository.findCart(customerId);
+  }
+
+  async updateCart(lineItem: CartRequestType & { customerId: string }) {
+    const cart = await this._repository.findCart(lineItem.customerId);
+    const cartItem = cart.lineItems.find((item) => item.id === lineItem.itemId);
+
+    if (!cartItem) {
+      throw new Error("Item not found in cart");
+    }
+
+    const unitPrice = cartItem.price / cartItem.quantity;
+    const totalPrice = unitPrice * lineItem.quantity;
+    const priceDifference = totalPrice - cartItem.price;
+
+    return await this._repository.updateCart(
+      lineItem.itemId,
+      lineItem.quantity,
+      totalPrice,
+      priceDifference
+    );
   }
 }

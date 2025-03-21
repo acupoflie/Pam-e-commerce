@@ -62,28 +62,29 @@ router.get(
 );
 
 router.patch(
-  "/carts/:cartId",
+  "/carts/:lineItemId",
   UserValidation,
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = req.user;
+    try {
+      const user = req.user;
 
-    if(!user) {
-      res.status(403).json({message: "You are not authorized to do this"});
-      return;
+      if (!user) {
+        res.status(403).json({ message: "You are not authorized to do this" });
+        return;
+      }
+
+      const itemId = req.params.lineItemId;
+
+      const data = await cartService.updateCart({
+        itemId,
+        quantity: req.body.quantity,
+        customerId: user.id,
+      });
+
+      res.status(200).json(data);
+    } catch (error) {
+      next(error);
     }
-
-    const id = req.params.cartId
-
-    const errors = ValidateRequest<CartRequestType>(
-      CartRequestSchema,
-      req.body
-    );
-
-    if (errors) {
-      res.status(400).json(errors);
-      return;
-    }
-
   }
 );
 

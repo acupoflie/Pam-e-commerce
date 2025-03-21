@@ -58,7 +58,47 @@ export class CartRepository implements ICartRepository {
       id: cart.id,
       userId: cart.userId,
       totalPrice: Number(cart.totalPrice),
-      lineItems: cart.items as unknown as CartLineItem[]
+      lineItems: cart.items as CartLineItem[],
+    };
+  }
+
+  async updateCart(
+    lineItemId: string,
+    qty: number,
+    totalPrice: number,
+    priceDifference: number
+  ): Promise<CartLineItem> {
+    return await this._prisma.$transaction(async (tx) => {
+      const cartItem = await tx.cartItem.update({
+        where: { id: lineItemId },
+        data: {
+          quantity: qty,
+          price: totalPrice,
+        },
+      });
+
+      await tx.cart.update({
+        where: { id: cartItem.cartId },
+        data: {
+          totalPrice: {
+            increment: priceDifference,
+          },
+        },
+      });
+
+      return cartItem;
+    });
+  }
+
+  async findCartItem(lineItemId: string): Promise<CartLineItem> {
+    const lineItem = await this._prisma.cartItem.findFirst({
+      where: { id: lineItemId },
+    });
+
+    if (!lineItem) {
+      throw new Error("Line item not found");
     }
+
+    return lineItem;
   }
 }
