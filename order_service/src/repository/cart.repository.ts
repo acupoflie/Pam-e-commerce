@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { CartLineItem } from "../dto/cartRequest.dto";
+import { CartLineItem, CartWithLineItems } from "../dto/cartRequest.dto";
 import { ICartRepository } from "../interface/ICartRepository";
 
 export class CartRepository implements ICartRepository {
@@ -17,8 +17,10 @@ export class CartRepository implements ICartRepository {
       where: { userId: customerId },
       create: {
         userId: customerId,
+        totalPrice: lineItem.price,
       },
       update: {
+        totalPrice: { increment: lineItem.price },
         updatedAt: new Date(Date.now()),
       },
     });
@@ -38,5 +40,25 @@ export class CartRepository implements ICartRepository {
     }
 
     return id;
+  }
+
+  async findCart(customerId: string): Promise<CartWithLineItems> {
+    const cart = await this._prisma.cart.findFirst({
+      where: { userId: customerId },
+      include: {
+        items: true,
+      },
+    });
+
+    if (!cart) {
+      throw new Error("Cart not found");
+    }
+
+    return {
+      id: cart.id,
+      userId: cart.userId,
+      totalPrice: Number(cart.totalPrice),
+      lineItems: cart.items as unknown as CartLineItem[]
+    }
   }
 }

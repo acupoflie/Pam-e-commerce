@@ -22,8 +22,6 @@ export const UserValidation = async (
       }
     );
 
-    console.log(data.data);
-
     req.user = data.data.user;
     next();
   } catch (error) {

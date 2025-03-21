@@ -1,4 +1,4 @@
-import { CartLineItem, CartRequestType } from "../dto/cartRequest.dto";
+import { CartLineItem, CartRequestType, CartWithLineItems } from "../dto/cartRequest.dto";
 import { ICartRepository } from "../interface/ICartRepository";
 import { logger } from "../utils";
 import { GetBookDetails } from "../utils/broker";
@@ -27,5 +27,9 @@ export class CartService {
       quantity: lineItem.quantity,
       price: totalPrice,
     } as CartLineItem);
+  }
+
+  async getCart(customerId: string): Promise<CartWithLineItems>{
+    return await this._repository.findCart(customerId);
   }
 }

@@ -17,7 +17,7 @@ model Cart {
   id         String     @id @default(uuid())
   userId     String     @unique
   items      CartItem[]
-  totalPrice Decimal    @default(0)
+  totalPrice Decimal    @default(0) @db.Decimal(10, 2)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
 }
