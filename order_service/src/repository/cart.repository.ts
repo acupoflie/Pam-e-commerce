@@ -101,4 +101,10 @@ export class CartRepository implements ICartRepository {
 
     return lineItem;
   }
+
+  async deleteCart(customerId: string): Promise<void> {
+    await this._prisma.cart.delete({
+      where: { userId: customerId },
+    });
+  }
 }

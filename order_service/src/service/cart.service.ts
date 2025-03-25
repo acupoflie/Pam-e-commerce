@@ -56,4 +56,8 @@ export class CartService {
       priceDifference
     );
   }
+
+  async deleteCart(customerId: string) {
+    return await this._repository.deleteCart(customerId);
+  }
 }

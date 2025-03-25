@@ -1,3 +1,4 @@
 node_modules
 # This project is just for practice so that I will push .env file as well
 # .env
+prisma/migrations

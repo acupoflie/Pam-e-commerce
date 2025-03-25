@@ -88,4 +88,24 @@ router.patch(
   }
 );
 
+router.delete(
+  "/carts",
+  UserValidation,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = req.user;
+
+      if (!user) {
+        res.status(403).json({ message: "You are not authorized to do this" });
+        return;
+      }
+
+      await cartService.deleteCart(user.id);
+      res.status(200).json({ message: "Cart deleted successfully" });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 export default router;
