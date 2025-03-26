@@ -17,7 +17,7 @@ model Cart {
   id         String     @id @default(uuid())
   userId     String     @unique
   items      CartItem[]
-  totalPrice Int    @default(0)
+  totalPrice Int        @default(0)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
 }
@@ -34,4 +34,27 @@ model CartItem {
   updatedAt DateTime @updatedAt
 
   @@index([cartId])
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  customerId  String
+  orderNumber Int
+  totalPrice  Int
+  status      String
+  items       OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  itemId    String
+  itemName  String
+  quantity  Int
+  price     Int
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
