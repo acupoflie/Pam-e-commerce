@@ -34,7 +34,7 @@ export class CartRepository implements ICartRepository {
           itemId: lineItem.itemId,
           itemName: lineItem.itemName,
           quantity: lineItem.quantity,
-          price: lineItem.price,
+          price: lineItem.price / lineItem.quantity,
         },
       });
     }
